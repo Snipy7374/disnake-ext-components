@@ -119,7 +119,7 @@ class ButtonListener(abc.BaseListener[P, T, disnake.MessageInteraction]):
 
     def __init__(
         self,
-        callback: ButtonListenerCallback[ParentT, P, T],
+        callback: ButtonListenerCallback[t.Any, P, T],
         *,
         name: t.Optional[str] = None,
         regex: t.Union[str, t.Pattern[str], None] = None,
@@ -347,7 +347,7 @@ class SelectListener(abc.BaseListener[P, T, disnake.MessageInteraction]):
 
     def __init__(
         self,
-        callback: SelectListenerCallback[ParentT, P, T],
+        callback: SelectListenerCallback[t.Any, P, T],
         *,
         name: t.Optional[str] = None,
         regex: t.Union[str, t.Pattern[str], None] = None,
@@ -601,7 +601,7 @@ class ModalListener(abc.BaseListener[P, T, disnake.ModalInteraction]):
 
     def __init__(
         self,
-        callback: ModalListenerCallback[ParentT, P, T],
+        callback: ModalListenerCallback[t.Any, P, T],
         *,
         name: t.Optional[str] = None,
         regex: t.Union[str, t.Pattern[str], None] = None,

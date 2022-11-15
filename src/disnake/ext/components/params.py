@@ -6,7 +6,7 @@ import sys
 import typing as t
 
 import disnake
-from disnake.ext.commands import params
+from disnake.ext import commands
 
 from . import converter, exceptions, patterns, types_
 
@@ -375,7 +375,7 @@ class ParamInfo:
         Raises whatever the converter function may raise. Generally speaking, this should only be
         :class:`ValueError`s.
         """
-        converter_signature = params.signature(  # pyright: ignore
+        converter_signature = commands.params.signature(  # pyright: ignore
             conv.__new__ if isinstance(conv, type) else conv
         ).parameters
 
