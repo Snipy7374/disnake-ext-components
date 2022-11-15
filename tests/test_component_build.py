@@ -1,9 +1,9 @@
 import typing as t
 
-import disnake
 import pytest
 
-import disnake_ext_components as components
+import disnake
+from src.disnake.ext import components
 
 b = disnake.ui.Button[t.Any]
 s = disnake.ui.Select[t.Any]

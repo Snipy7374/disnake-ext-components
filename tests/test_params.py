@@ -2,10 +2,10 @@ import datetime
 import inspect
 import typing as t
 
-import disnake
 import pytest
 
-import disnake_ext_components as components
+import disnake
+from src.disnake.ext import components
 
 ParsedParams = t.Tuple[t.Tuple[inspect.Parameter, ...], t.Tuple[inspect.Parameter, ...]]
 

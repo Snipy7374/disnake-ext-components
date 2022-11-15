@@ -2,11 +2,11 @@
 
 import typing as t
 
-import disnake
 import pytest
 
-import disnake_ext_components as components
-from disnake_ext_components import abc
+import disnake
+from src.disnake.ext import components
+from src.disnake.ext.components import abc
 
 # The decorated function...
 ListenerCallback = t.Callable[..., t.Any]

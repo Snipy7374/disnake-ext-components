@@ -1,10 +1,10 @@
 import typing as t
 from unittest import mock
 
-import disnake
 import pytest
 
-import disnake_ext_components as components
+import disnake
+from src.disnake.ext import components
 
 
 @pytest.fixture()

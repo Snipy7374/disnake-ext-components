@@ -4,7 +4,7 @@ import typing as t
 
 import pytest
 
-import disnake_ext_components as components
+from src.disnake.ext import components
 
 # utils.ensure_compiled
 

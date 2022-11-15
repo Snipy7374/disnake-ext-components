@@ -1,6 +1,6 @@
 import datetime
 
-import disnake_ext_components as components
+from src.disnake.ext import components
 
 # types_.ListenerType
 

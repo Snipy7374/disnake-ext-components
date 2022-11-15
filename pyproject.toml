@@ -1,5 +1,41 @@
+[tool.poetry]
+name = "disnake-ext-components"
+version = "0.2.0"
+description = "An extension for disnake aimed at making component interactions with listeners somewhat less cumbersome."
+authors = ["Chromosomologist <chromosomologist@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "disnake/ext/components", from="src"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+disnake = "^2.5.0"
+typing-extensions = "^4.4.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+
+isort = "^5.10.1"
+slotscheck = "^0.16.0"
+
+flake8 = "^5.0.4"
+flake8-bandit = "^4.1.1"
+flake8-bugbear = "^22.10.27"
+flake8-comprehensions = "^3.10.1"
+flake8-noqa = "^1.2.9"
+flake8-pytest-style = "^1.6.0"
+pre-commit = "^2.20.0"
+pytest = "^7.2.0"
+pytest-asyncio = "^0.20.2"
+
+pyright = "^1.1.279"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.pyright]
-include = ["disnake_ext_components"]
+include = ["src/disnake/ext/components"]
 typeCheckingMode = "strict"
 reportMissingTypeStubs = false
 reportPrivateUsage = false
@@ -11,10 +47,6 @@ line-length = 100
 [tool.isort]
 profile = "black"
 skip_gitignore = true
-
-[tool.mypy]
-namespace_packages = true
-files = ["disnake_ext_components/*.py"]
 
 [tool.pytest.ini_options]
 required_plugins = ["pytest-asyncio"]
