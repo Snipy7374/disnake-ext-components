@@ -201,7 +201,8 @@ class AbstractComponent:
     __slots__: t.Tuple[t.Any] = tuple(
         set(disnake.Component.__slots__)
         | set(disnake.Button.__slots__)
-        | set(disnake.SelectMenu.__slots__)
+        | set(disnake.BaseSelectMenu.__slots__)
+        | set(disnake.StringSelectMenu.__slots__)
     )
 
     def __init__(self, **kwargs: t.Any):
