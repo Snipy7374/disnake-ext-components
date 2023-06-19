@@ -63,12 +63,17 @@ def get_parser(field: attr.Attribute[typing.Any]) -> typing.Optional[parser_api.
     return field.metadata.get(FieldMetadata.PARSER)
 
 
-def get_field_type(field: attr.Attribute[typing.Any]) -> FieldType:
+def get_field_type(
+    field: attr.Attribute[typing.Any], default: typing.Optional[FieldType] = None
+) -> FieldType:
     """Get the field type of the field.
 
     If the field wasn't constructed by disnake-ext-components, this will raise.
     """
     if FieldMetadata.FIELDTYPE not in field.metadata:
+        if default:
+            return default
+
         msg = (
             f"Field {field.name!r} does not contain the proper metadata to be"
             f" recognised by disnake-ext-components. Please only construct fields"
@@ -109,7 +114,7 @@ def get_fields(
 
 
 def field(
-    default: _T,
+    default: typing.Union[_T, typing.Literal[attr.NOTHING]] = attr.NOTHING,
     *,
     parser: typing.Optional[parser_api.Parser[_T]] = None,
 ) -> _T:
@@ -138,7 +143,7 @@ def field(
         created this way always has ``kw_only=True`` set.
     """
     return attr.field(
-        default=default,
+        default=typing.cast(_T, default),
         kw_only=True,
         metadata={
             FieldMetadata.FIELDTYPE: FieldType.CUSTOM_ID,
@@ -147,16 +152,15 @@ def field(
     )
 
 
-def internal(  # noqa: D417
+def internal(
     default: _T,
     *,
-    init: typing.Literal[False] = False,  # noqa: ARG001
     frozen: bool = False,
 ) -> _T:
     """Declare a field as internal.
 
-    This automatically makes it not appear inside the init signature for the
-    component, and allows marking the field as frozen.
+    This is used internally to differentiate component parameters from user-
+    defined custom id parameters.
 
     Parameters
     ----------
@@ -170,17 +174,11 @@ def internal(  # noqa: D417
     Returns
     -------
     attr.Field
-        A new field with the provided default and frozen status. Note that an
-        internal field always has ``init=False`` set.
+        A new field with the provided default and frozen status.
     """
-    # NOTE: The init arg is *required* in the signature for typecheckers to
-    #       pick up on it. If it weren't there, each internal field would have
-    #       to manually declare ``init=False``.
-
     setter = attr.setters.frozen if frozen else None
     return attr.field(
         default=default,
-        init=False,
         on_setattr=setter,
         metadata={FieldMetadata.FIELDTYPE: FieldType.INTERNAL},
     )

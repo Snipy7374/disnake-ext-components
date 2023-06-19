@@ -32,7 +32,11 @@ MessageComponents = typing.Union[
     component_api.RichButton,
     disnake.ui.Button[typing.Any],
     component_api.RichSelect,
-    disnake.ui.Select[typing.Any],
+    disnake.ui.StringSelect[typing.Any],
+    disnake.ui.ChannelSelect[typing.Any],
+    disnake.ui.RoleSelect[typing.Any],
+    disnake.ui.UserSelect[typing.Any],
+    disnake.ui.MentionableSelect[typing.Any],
 ]
 
 
@@ -43,7 +47,7 @@ async def _prepare(component: MessageComponents) -> disnake.ui.MessageUIComponen
     if isinstance(
         component, (component_api.RichButton, component_api.RichSelect)
     ):  # TODO: add select
-        return await component.as_ui_component()
+        return await component.as_ui_component()  # pyright: ignore
 
     return component
 
@@ -83,9 +87,7 @@ async def _to_ui_components(
     if not isinstance(components, typing.Sequence):
         return await _prepare(components)
 
-    finalised: list[
-        typing.Union[disnake.ui.MessageUIComponent, list[disnake.ui.MessageUIComponent]]
-    ] = []
+    finalised: disnake.ui.Components[disnake.ui.MessageUIComponent] = []
     for component in components:
         if not isinstance(component, typing.Sequence):
             finalised.append(await _prepare(component))
@@ -126,8 +128,8 @@ class WrappedInteraction(disnake.Interaction):
 
         return WrappedInteractionResponse(super().response)
 
-    @disnake.utils.cached_slot_property("_cs_response")
-    def followup(self) -> ...:  # noqa: D102
+    @disnake.utils.cached_slot_property("_cs_followup")
+    def followup(self) -> disnake.Webhook:  # noqa: D102
         # <<docstring inherited from disnake.Interaction>>
 
         return self._wrapped.followup  # TODO: custom followup object
@@ -137,10 +139,10 @@ class WrappedInteraction(disnake.Interaction):
         content: typing.Optional[str] = MISSING,
         *,
         embed: typing.Optional[disnake.Embed] = MISSING,
-        embeds: list[disnake.Embed] = MISSING,
+        embeds: typing.List[disnake.Embed] = MISSING,
         file: disnake.File = MISSING,
-        files: list[disnake.File] = MISSING,
-        attachments: typing.Optional[list[disnake.Attachment]] = MISSING,
+        files: typing.List[disnake.File] = MISSING,
+        attachments: typing.Optional[typing.List[disnake.Attachment]] = MISSING,
         view: typing.Optional[disnake.ui.View] = MISSING,
         components: typing.Optional[Components[MessageComponents]] = MISSING,
         suppress_embeds: bool = MISSING,
@@ -161,14 +163,16 @@ class WrappedInteraction(disnake.Interaction):
             allowed_mentions=allowed_mentions,
         )
 
+    edit_original_message = edit_original_response
+
     async def send(  # pyright: ignore[reportIncompatibleMethodOverride]  # noqa: D102
         self,
         content: typing.Optional[str] = None,
         *,
         embed: disnake.Embed = MISSING,
-        embeds: list[disnake.Embed] = MISSING,
+        embeds: typing.List[disnake.Embed] = MISSING,
         file: disnake.File = MISSING,
-        files: list[disnake.File] = MISSING,
+        files: typing.List[disnake.File] = MISSING,
         allowed_mentions: disnake.AllowedMentions = MISSING,
         view: disnake.ui.View = MISSING,
         components: Components[MessageComponents] = MISSING,
@@ -212,14 +216,21 @@ class WrappedInteractionResponse(disnake.InteractionResponse):
     def __init__(self, wrapped: disnake.InteractionResponse):
         self._wrapped = wrapped
 
+    def __getattribute__(self, name: str) -> typing.Any:  # noqa: ANN401
+        """Get an attribute of this class or the wrapped interaction."""
+        try:
+            return super().__getattribute__(name)
+        except AttributeError:
+            return getattr(self._wrapped, name)
+
     async def send_message(  # pyright: ignore[reportIncompatibleMethodOverride]  # noqa: D102, E501
         self,
         content: typing.Optional[str] = None,
         *,
         embed: disnake.Embed = MISSING,
-        embeds: list[disnake.Embed] = MISSING,
+        embeds: typing.List[disnake.Embed] = MISSING,
         file: disnake.File = MISSING,
-        files: list[disnake.File] = MISSING,
+        files: typing.List[disnake.File] = MISSING,
         allowed_mentions: disnake.AllowedMentions = MISSING,
         view: disnake.ui.View = MISSING,
         components: Components[MessageComponents] = MISSING,
@@ -250,10 +261,10 @@ class WrappedInteractionResponse(disnake.InteractionResponse):
         content: typing.Optional[str] = None,
         *,
         embed: disnake.Embed = MISSING,
-        embeds: list[disnake.Embed] = MISSING,
+        embeds: typing.List[disnake.Embed] = MISSING,
         file: disnake.File = MISSING,
-        files: list[disnake.File] = MISSING,
-        attachments: typing.Optional[list[disnake.Attachment]] = MISSING,
+        files: typing.List[disnake.File] = MISSING,
+        attachments: typing.Optional[typing.List[disnake.Attachment]] = MISSING,
         allowed_mentions: disnake.AllowedMentions = MISSING,
         view: disnake.ui.View = MISSING,
         components: typing.Optional[Components[MessageComponents]] = MISSING,

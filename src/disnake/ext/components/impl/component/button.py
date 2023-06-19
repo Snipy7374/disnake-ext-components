@@ -7,16 +7,17 @@ import typing
 import disnake
 from disnake.ext.components import fields, interaction
 from disnake.ext.components.api import component as component_api
-from disnake.ext.components.impl import custom_id as custom_id_impl
 from disnake.ext.components.impl.component import base as component_base
-
-if typing.TYPE_CHECKING:
-    import typing_extensions
 
 __all__: typing.Sequence[str] = ("RichButton",)
 
 
 _AnyEmoji = typing.Union[str, disnake.PartialEmoji, disnake.Emoji]
+
+
+# God knows why this is needed, but if I don't do this, classes inheriting from
+# RichButton see e.g. `fields.internal(default=None)` in the init signature.
+internal = fields.internal
 
 
 @typing.runtime_checkable
@@ -44,39 +45,25 @@ class RichButton(
 
     event = "on_button_click"
 
-    custom_id = custom_id_impl.AutoID()
-
-    label: typing.Optional[str] = fields.internal(None)
-    style: disnake.ButtonStyle = fields.internal(disnake.ButtonStyle.secondary)
-    emoji: typing.Optional[_AnyEmoji] = fields.internal(None)
-    disabled: bool = fields.internal(False)  # noqa: FBT003
+    label: typing.Optional[str] = fields.internal(default=None)
+    style: disnake.ButtonStyle = fields.internal(default=disnake.ButtonStyle.secondary)
+    emoji: typing.Optional[_AnyEmoji] = fields.internal(default=None)
+    disabled: bool = fields.internal(default=False)
 
     async def as_ui_component(self) -> disnake.ui.Button[None]:  # noqa: D102
         # <<docstring inherited from component_api.RichButton>>
+
+        if not self.manager:
+            message = "Cannot serialise components without a manager."
+            raise RuntimeError(message)
 
         return disnake.ui.Button(
             style=self.style,
             label=self.label,
             disabled=self.disabled,
             emoji=self.emoji,
-            custom_id=await self.dumps(),
+            custom_id=await self.manager.make_custom_id(self),
         )
-
-    @classmethod
-    async def loads(  # noqa: D102
-        cls, interaction: disnake.MessageInteraction, /
-    ) -> typing_extensions.Self:
-        # <<Docstring inherited from component_api.RichComponent>>
-
-        # TODO: Maybe copy over internal attributes from the inter.component.
-        # TODO: Error handling around match for more sensible errors.
-
-        custom_id = typing.cast(str, interaction.component.custom_id)
-        component_custom_id = typing.cast(custom_id_impl.CustomID, cls.custom_id)
-
-        match = component_custom_id.match(custom_id, strict=True)
-
-        return await cls.factory.loads(interaction, match.groupdict())
 
     async def callback(  # pyright: ignore[reportIncompatibleMethodOverride]  # noqa: D102, E501
         self,
