@@ -15,8 +15,15 @@ def snowflake_dumps(argument: disnake.abc.Snowflake) -> str:
     return str(argument.id)
 
 
-ObjectParser = base.Parser.from_funcs(
-    lambda _, arg: disnake.Object(int(arg)),
-    snowflake_dumps,
+class ObjectParser(
+    base.Parser[disnake.Object],
     is_default_for=(disnake.abc.Snowflake, disnake.Object),
-)
+):
+    # <<docstring inherited from parser_api.Parser>>
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.dumps = snowflake_dumps
+    
+    def loads(self, _: disnake.Interaction, argument: str) -> disnake.Object:
+        return disnake.Object(int(argument))

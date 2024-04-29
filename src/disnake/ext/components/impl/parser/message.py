@@ -22,29 +22,45 @@ AnyChannel = typing.Union[
 ]
 
 
-def _get_message(inter: disnake.Interaction, argument: str) -> disnake.Message:
-    message = inter.bot.get_message(int(argument))
+class GetMessageParser(
+    base.Parser[disnake.Message],
+    is_default_for=(disnake.Message,)
+):
+    # <<docstring inherited from parser_api.Parser>>
 
-    if message is None:
-        msg = f"Could not find a message with id {argument!r}."
-        raise LookupError(msg)
+    def __init__(self) -> None:
+        super().__init__()
+        self.dumps = snowflake.snowflake_dumps
+    
+    def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Message:
+        # <<docstring inherited from parser_api.Parser>>
 
-    return message
+        message = inter.bot.get_message(int(argument))
+
+        if message is None:
+            msg = f"Could not find a message with id {argument!r}."
+            raise LookupError(msg)
+
+        return message
 
 
-async def _fetch_message(inter: disnake.Interaction, argument: str) -> disnake.Message:
-    return (
-        inter.bot.get_message(int(argument))
-        or await inter.channel.fetch_message(int(argument))
-    )  # fmt: skip
+class MessageParser(
+    base.Parser[disnake.Message],
+    is_default_for=(disnake.Message,),
+):
+    # <<docstring inherited from parser_api.Parser>>
 
+    def __init__(self) -> None:
+        super().__init__()
+        self.dumps = snowflake.snowflake_dumps
 
-GetMessageParser = base.Parser.from_funcs(
-    _get_message, snowflake.snowflake_dumps, is_default_for=(disnake.Message,)
-)
-MessageParser = base.Parser.from_funcs(
-    _fetch_message, snowflake.snowflake_dumps, is_default_for=(disnake.Message,)
-)
+    async def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Message:
+        # <<docstring inherited from parser_api.Parser>>
+
+        return (
+            inter.bot.get_message(int(argument))
+            or await inter.channel.fetch_message(int(argument))
+        ) # fmt: skip
 
 
 class PartialMessageParser(  # noqa: D101
