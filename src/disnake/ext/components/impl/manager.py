@@ -20,7 +20,7 @@ from disnake.ext.components.api import component as component_api
 if typing.TYPE_CHECKING:
     import typing_extensions
 
-__all__: typing.Sequence[str] = ("ComponentManager", "get_manager")
+__all__: typing.Sequence[str] = ("ComponentManager", "get_manager", "check_manager")
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -328,7 +328,7 @@ class ComponentManager(component_api.ComponentManager):
         return name, params
 
     def increment(self) -> str:  # noqa: D102
-        count = _minimise_count(self.count)
+        count = _minimise_count(self._counter)
 
         self._counter += 1
         if self._counter > 24:
@@ -378,20 +378,20 @@ class ComponentManager(component_api.ComponentManager):
             self.deregister(component_type)
             return None
 
-        component = await component_type.factory.build_from_interaction(
-            interaction, params
+        if isinstance(interaction, disnake.MessageInteraction):
+            component_params = {
+                field.name: getattr(interaction.component, field.name)
+                for field in fields.get_fields(
+                    component_type, kind=fields.FieldType.INTERNAL
+                )
+            }
+
+        else:
+            component_params = None
+
+        return await component_type.factory.build_from_interaction(
+            interaction, params, component_params=component_params
         )
-
-        if not isinstance(interaction, disnake.MessageInteraction):
-            return component
-
-        interaction_component = interaction.component
-
-        for field in fields.get_fields(component_type, kind=fields.FieldType.INTERNAL):
-            name = field.name
-            setattr(component, name, getattr(interaction_component, name))
-
-        return component
 
     # Nothing: nested decorator, return callable that registers and
     # returns the component.
@@ -903,3 +903,23 @@ def get_manager(name: typing.Optional[str] = None) -> ComponentManager:
         parent.children.add(manager)
 
     return manager
+
+
+def check_manager(name: str) -> bool:
+    """Check if a manager with the provided name exists.
+
+    .. note::
+        Unlike :func:`get_manager`, this function will not create missing
+        managers.
+
+    Parameters
+    ----------
+    name:
+        The name to check.
+
+    Returns
+    -------
+    :class:`bool`
+        Whether a manager with the provided name exists.
+    """
+    return name in _MANAGER_STORE
