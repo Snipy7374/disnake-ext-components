@@ -10,7 +10,7 @@ from disnake.ext.components.impl.parser import base, snowflake
 __all__: typing.Sequence[str] = ("GuildParser", "GetGuildParser")
 
 
-class GetGuildParser(
+class GetGuildParser(  # noqa: D101
     base.Parser[disnake.Guild],
     is_default_for=(disnake.Guild,),
 ):
@@ -19,8 +19,10 @@ class GetGuildParser(
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
-    
-    def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Guild:
+
+    def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.Guild:
         # <<docstring inherited from parser_api.Parser>>
 
         guild = inter.bot.get_guild(int(argument))
@@ -32,7 +34,7 @@ class GetGuildParser(
         return guild
 
 
-class GuildParser(
+class GuildParser(  # noqa: D101
     base.Parser[disnake.Guild],
     is_default_for=(disnake.Guild,),
 ):
@@ -41,8 +43,10 @@ class GuildParser(
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
-    
-    async def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Guild:
+
+    async def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.Guild:
         # <<docstring inherited from parser_api.Parser>>
 
         return (

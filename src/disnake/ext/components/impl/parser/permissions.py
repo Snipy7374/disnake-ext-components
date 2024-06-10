@@ -10,18 +10,20 @@ from disnake.ext.components.impl.parser import base
 __all__: typing.Sequence[str] = ("PermissionsParser",)
 
 
-class PermissionsParser(
+class PermissionsParser(  # noqa: D101
     base.Parser[disnake.Permissions],
     is_default_for=(disnake.Permissions,),
 ):
     # <<docstring inherited from parser_api.Parser>>
 
-    def dumps(self, argument: disnake.Permissions) -> str:
+    def dumps(self, argument: disnake.Permissions) -> str:  # noqa: D102
         # <<docstring inherited from parser_api.Parser>>
 
         return str(argument.value)
 
-    def loads(self, _: disnake.Interaction, argument: str) -> disnake.Permissions:
+    def loads(  # noqa: D102
+        self, _: disnake.Interaction, argument: str
+    ) -> disnake.Permissions:
         # <<docstring inherited from parser_api.Parser>>
 
         return disnake.Permissions(int(argument))

@@ -22,17 +22,18 @@ AnyChannel = typing.Union[
 ]
 
 
-class GetMessageParser(
-    base.Parser[disnake.Message],
-    is_default_for=(disnake.Message,)
+class GetMessageParser(  # noqa: D101
+    base.Parser[disnake.Message], is_default_for=(disnake.Message,)
 ):
     # <<docstring inherited from parser_api.Parser>>
 
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
-    
-    def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Message:
+
+    def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.Message:
         # <<docstring inherited from parser_api.Parser>>
 
         message = inter.bot.get_message(int(argument))
@@ -44,7 +45,7 @@ class GetMessageParser(
         return message
 
 
-class MessageParser(
+class MessageParser(  # noqa: D101
     base.Parser[disnake.Message],
     is_default_for=(disnake.Message,),
 ):
@@ -54,13 +55,15 @@ class MessageParser(
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
 
-    async def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Message:
+    async def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.Message:
         # <<docstring inherited from parser_api.Parser>>
 
         return (
             inter.bot.get_message(int(argument))
             or await inter.channel.fetch_message(int(argument))
-        ) # fmt: skip
+        )  # fmt: skip
 
 
 class PartialMessageParser(  # noqa: D101

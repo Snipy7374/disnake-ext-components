@@ -41,7 +41,7 @@ _ChannelT = typing.TypeVar("_ChannelT", bound=_AnyChannel)
 # GET_ONLY
 
 
-class GetChannelParserBase(base.Parser[_ChannelT]):
+class GetChannelParserBase(base.Parser[_ChannelT]):  # noqa: D101
     # <<docstring inherited from parser_api.Parser>>
 
     parser_type: typing.Type[_ChannelT]
@@ -49,8 +49,10 @@ class GetChannelParserBase(base.Parser[_ChannelT]):
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
-    
-    def loads(self, inter: disnake.Interaction, argument: str) -> _ChannelT:
+
+    def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> _ChannelT:
         # <<docstring inherited from parser_api.Parser>>
 
         channel = inter.bot.get_channel(int(argument))
@@ -71,7 +73,7 @@ class GetChannelParserBase(base.Parser[_ChannelT]):
 # GET AND FETCH
 
 
-class ChannelParserBase(base.Parser[_ChannelT]):
+class ChannelParserBase(base.Parser[_ChannelT]):  # noqa: D101
     # <<docstring inherited from parser_api.Parser>>
 
     parser_type: typing.Type[_ChannelT]
@@ -79,8 +81,10 @@ class ChannelParserBase(base.Parser[_ChannelT]):
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
-    
-    async def loads(self, inter: disnake.Interaction, argument: str) -> _ChannelT:
+
+    async def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> _ChannelT:
         # <<docstring inherited from parser_api.Parser>>
 
         channel_id = int(argument)
@@ -101,7 +105,7 @@ class ChannelParserBase(base.Parser[_ChannelT]):
 # ABSTRACT
 
 
-class GetGuildChannelParser(
+class GetGuildChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.abc.GuildChannel],
     is_default_for=(disnake.abc.GuildChannel,),
 ):
@@ -109,7 +113,7 @@ class GetGuildChannelParser(
     parser_type = disnake.abc.GuildChannel
 
 
-class GetPrivateChannelParser(
+class GetPrivateChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.abc.PrivateChannel],
     is_default_for=(disnake.abc.PrivateChannel,),
 ):
@@ -120,7 +124,7 @@ class GetPrivateChannelParser(
 # PRIVATE
 
 
-class GetDMChannelParser(
+class GetDMChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.DMChannel],
     is_default_for=(disnake.DMChannel,),
 ):
@@ -128,7 +132,7 @@ class GetDMChannelParser(
     parser_type = disnake.DMChannel
 
 
-class GetGroupChannelParser(
+class GetGroupChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.GroupChannel],
     is_default_for=(disnake.GroupChannel,),
 ):
@@ -139,7 +143,7 @@ class GetGroupChannelParser(
 # GUILD
 
 
-class GetForumChannelParser(
+class GetForumChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.ForumChannel],
     is_default_for=(disnake.ForumChannel,),
 ):
@@ -147,7 +151,7 @@ class GetForumChannelParser(
     parser_type = disnake.ForumChannel
 
 
-class GetNewsChannelParser(
+class GetNewsChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.NewsChannel],
     is_default_for=(disnake.NewsChannel,),
 ):
@@ -155,7 +159,7 @@ class GetNewsChannelParser(
     parser_type = disnake.NewsChannel
 
 
-class GetVoiceChannelParser(
+class GetVoiceChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.VoiceChannel],
     is_default_for=(disnake.VoiceChannel,),
 ):
@@ -163,7 +167,7 @@ class GetVoiceChannelParser(
     parser_type = disnake.VoiceChannel
 
 
-class GetStageChannelParser(
+class GetStageChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.StageChannel],
     is_default_for=(disnake.StageChannel,),
 ):
@@ -171,7 +175,7 @@ class GetStageChannelParser(
     parser_type = disnake.StageChannel
 
 
-class GetTextChannelParser(
+class GetTextChannelParser(  # noqa: D101
     GetChannelParserBase[disnake.TextChannel],
     is_default_for=(disnake.TextChannel,),
 ):
@@ -179,7 +183,7 @@ class GetTextChannelParser(
     parser_type = disnake.TextChannel
 
 
-class GetThreadParser(
+class GetThreadParser(  # noqa: D101
     GetChannelParserBase[disnake.Thread],
     is_default_for=(disnake.Thread,),
 ):
@@ -187,7 +191,7 @@ class GetThreadParser(
     parser_type = disnake.Thread
 
 
-class GetCategoryParser(
+class GetCategoryParser(  # noqa: D101
     GetChannelParserBase[disnake.CategoryChannel],
     is_default_for=(disnake.CategoryChannel,),
 ):
@@ -197,7 +201,8 @@ class GetCategoryParser(
 
 # ASYNC ABSTRACT
 
-class GuildChannelParser(
+
+class GuildChannelParser(  # noqa: D101
     ChannelParserBase[disnake.abc.GuildChannel],
     is_default_for=(disnake.abc.GuildChannel,),
 ):
@@ -205,7 +210,7 @@ class GuildChannelParser(
     parser_type = disnake.abc.GuildChannel
 
 
-class PrivateChannelParser(
+class PrivateChannelParser(  # noqa: D101
     ChannelParserBase[disnake.abc.PrivateChannel],
     is_default_for=(disnake.abc.PrivateChannel,),
 ):
@@ -215,7 +220,8 @@ class PrivateChannelParser(
 
 # ASYNC PRIVATE
 
-class DMChannelParser(
+
+class DMChannelParser(  # noqa: D101
     ChannelParserBase[disnake.DMChannel],
     is_default_for=(disnake.DMChannel,),
 ):
@@ -223,7 +229,7 @@ class DMChannelParser(
     parser_type = disnake.DMChannel
 
 
-class GroupChannelParser(
+class GroupChannelParser(  # noqa: D101
     ChannelParserBase[disnake.GroupChannel],
     is_default_for=(disnake.GroupChannel,),
 ):
@@ -233,7 +239,8 @@ class GroupChannelParser(
 
 # ASYNC GUILD
 
-class ForumChannelParser(
+
+class ForumChannelParser(  # noqa: D101
     ChannelParserBase[disnake.ForumChannel],
     is_default_for=(disnake.ForumChannel,),
 ):
@@ -241,7 +248,7 @@ class ForumChannelParser(
     parser_type = disnake.ForumChannel
 
 
-class NewsChannelParser(
+class NewsChannelParser(  # noqa: D101
     ChannelParserBase[disnake.NewsChannel],
     is_default_for=(disnake.NewsChannel,),
 ):
@@ -249,7 +256,7 @@ class NewsChannelParser(
     parser_type = disnake.NewsChannel
 
 
-class VoiceChannelParser(
+class VoiceChannelParser(  # noqa: D101
     ChannelParserBase[disnake.VoiceChannel],
     is_default_for=(disnake.VoiceChannel,),
 ):
@@ -257,7 +264,7 @@ class VoiceChannelParser(
     parser_type = disnake.VoiceChannel
 
 
-class StageChannelParser(
+class StageChannelParser(  # noqa: D101
     ChannelParserBase[disnake.StageChannel],
     is_default_for=(disnake.StageChannel,),
 ):
@@ -265,7 +272,7 @@ class StageChannelParser(
     parser_type = disnake.StageChannel
 
 
-class TextChannelParser(
+class TextChannelParser(  # noqa: D101
     ChannelParserBase[disnake.TextChannel],
     is_default_for=(disnake.TextChannel,),
 ):
@@ -273,7 +280,7 @@ class TextChannelParser(
     parser_type = disnake.TextChannel
 
 
-class ThreadParser(
+class ThreadParser(  # noqa: D101
     ChannelParserBase[disnake.Thread],
     is_default_for=(disnake.Thread,),
 ):
@@ -281,7 +288,7 @@ class ThreadParser(
     parser_type = disnake.Thread
 
 
-class CategoryParser(
+class CategoryParser(  # noqa: D101
     ChannelParserBase[disnake.CategoryChannel],
     is_default_for=(disnake.CategoryChannel,),
 ):

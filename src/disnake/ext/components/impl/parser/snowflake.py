@@ -15,7 +15,7 @@ def snowflake_dumps(argument: disnake.abc.Snowflake) -> str:
     return str(argument.id)
 
 
-class ObjectParser(
+class ObjectParser(  # noqa: D101
     base.Parser[disnake.Object],
     is_default_for=(disnake.abc.Snowflake, disnake.Object),
 ):
@@ -24,6 +24,8 @@ class ObjectParser(
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake_dumps
-    
-    def loads(self, _: disnake.Interaction, argument: str) -> disnake.Object:
+
+    def loads(  # noqa: D102
+        self, _: disnake.Interaction, argument: str
+    ) -> disnake.Object:
         return disnake.Object(int(argument))

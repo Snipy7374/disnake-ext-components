@@ -15,7 +15,7 @@ __all__: typing.Sequence[str] = (
 )
 
 
-class GetUserParser(
+class GetUserParser(  # noqa: D101
     base.Parser[disnake.User],
     is_default_for=(disnake.User, disnake.abc.User),
 ):
@@ -25,7 +25,9 @@ class GetUserParser(
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
 
-    def loads(self, inter: disnake.Interaction, argument: str) -> disnake.User:
+    def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.User:
         # <<docstring inherited from parser_api.Parser>>
 
         user = inter.bot.get_user(int(argument))
@@ -37,7 +39,7 @@ class GetUserParser(
         return user
 
 
-class GetMemberParser(
+class GetMemberParser(  # noqa: D101
     base.Parser[disnake.Member],
     is_default_for=(disnake.Member,),
 ):
@@ -46,8 +48,10 @@ class GetMemberParser(
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
-    
-    def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Member:
+
+    def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.Member:
         # <<docstring inherited from parser_api.Parser>>
 
         if inter.guild is None:
@@ -65,17 +69,18 @@ class GetMemberParser(
         return member
 
 
-class UserParser(
-    base.Parser[disnake.User],
-    is_default_for=(disnake.User, disnake.abc.User)
+class UserParser(  # noqa: D101
+    base.Parser[disnake.User], is_default_for=(disnake.User, disnake.abc.User)
 ):
     # <<docstring inherited from parser_api.Parser>>
 
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
-    
-    async def loads(self, inter: disnake.Interaction, argument: str) -> disnake.User:
+
+    async def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.User:
         # <<docstring inherited from parser_api.Parser>>
 
         return (
@@ -84,17 +89,18 @@ class UserParser(
         )  # fmt: skip
 
 
-class MemberParser(
-    base.Parser[disnake.Member],
-    is_default_for=(disnake.Member,)
+class MemberParser(  # noqa: D101
+    base.Parser[disnake.Member], is_default_for=(disnake.Member,)
 ):
     # <<docstring inherited from parser_api.Parser>>
 
     def __init__(self) -> None:
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
-    
-    async def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Member:
+
+    async def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.Member:
         # <<docstring inherited from parser_api.Parser>>
 
         if inter.guild is None:

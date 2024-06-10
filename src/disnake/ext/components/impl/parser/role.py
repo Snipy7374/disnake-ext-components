@@ -13,7 +13,7 @@ __all__: typing.Sequence[str] = (
 )
 
 
-class GetRoleParser(
+class GetRoleParser(  # noqa: D101
     base.Parser[disnake.Role],
     is_default_for=(disnake.Role,),
 ):
@@ -23,7 +23,9 @@ class GetRoleParser(
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
 
-    def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Role:
+    def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.Role:
         # <<docstring inherited from parser_api.Parser>>
 
         if inter.guild is None:
@@ -41,7 +43,7 @@ class GetRoleParser(
         return role
 
 
-class RoleParser(
+class RoleParser(  # noqa: D101
     base.Parser[disnake.Role],
     is_default_for=(disnake.Role,),
 ):
@@ -51,7 +53,9 @@ class RoleParser(
         super().__init__()
         self.dumps = snowflake.snowflake_dumps
 
-    async def loads(self, inter: disnake.Interaction, argument: str) -> disnake.Role:
+    async def loads(  # noqa: D102
+        self, inter: disnake.Interaction, argument: str
+    ) -> disnake.Role:
         # <<docstring inherited from parser_api.Parser>>
 
         if inter.guild is None:
