@@ -113,8 +113,8 @@ class RichUserSelect(BaseSelect, typing.Protocol):
     keyword-only arguments.
     """
 
-    default_values: SelectDefaultValue[disnake.User | disnake.Member] = (
-        fields.internal(default=None)
+    default_values: SelectDefaultValue[disnake.User | disnake.Member] = fields.internal(
+        default=None
     )
     """The list of values (users/members) that are selected by default.
 
@@ -157,9 +157,7 @@ class RichRoleSelect(BaseSelect, typing.Protocol):
     keyword-only arguments.
     """
 
-    default_values: SelectDefaultValue[disnake.Role] = fields.internal(
-        default=None
-    )
+    default_values: SelectDefaultValue[disnake.Role] = fields.internal(default=None)
     """The list of values (roles) that are selected by default.
 
     If set, the number of items must be within the bounds set by min_values and max_values.
@@ -201,7 +199,9 @@ class RichMentionableSelect(BaseSelect, typing.Protocol):
     keyword-only arguments.
     """
 
-    default_values: SelectDefaultValue[disnake.User | disnake.Member | disnake.Role] = fields.internal(default=None)
+    default_values: SelectDefaultValue[disnake.User | disnake.Member | disnake.Role] = (
+        fields.internal(default=None)
+    )
     """The list of values (users/roles) that are selected by default.
 
     If set, the number of items must be within the bounds set by min_values and max_values.
@@ -243,9 +243,7 @@ class RichChannelSelect(BaseSelect, typing.Protocol):
     keyword-only arguments.
     """
 
-    default_values: SelectDefaultValue[AnyChannel] = fields.internal(
-        default=None
-    )
+    default_values: SelectDefaultValue[AnyChannel] = fields.internal(default=None)
     """The list of values (channels) that are selected by default.
 
     If set, the number of items must be within the bounds set by min_values and max_values.
