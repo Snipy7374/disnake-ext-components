@@ -14,6 +14,8 @@ from disnake_compass.impl.component import base as component_base
 
 if typing.TYPE_CHECKING:
     from disnake.abc import AnyChannel
+else:
+    AnyChannel = typing.Any
 
 __all__: typing.Sequence[str] = (
     "RichChannelSelect",
@@ -22,8 +24,13 @@ __all__: typing.Sequence[str] = (
     "RichStringSelect",
     "RichUserSelect",
 )
+
 T = typing.TypeVar("T")
 SelectDefaultValue = list[SelectDefaultValueMultiInputType[T]] | None
+"""A type alias for select menu components that supports the ``default_values``
+
+attribute to conveniently typehint in subclasses.
+"""
 
 
 class BaseSelect(

@@ -8,6 +8,8 @@ Rich Select Implementations
 Classes
 -------
 
+.. autodata:: disnake_compass.impl.component.select.SelectDefaultValue
+
 .. Not sure why we need to manually declare all members here...
 .. attributetable:: disnake_compass.impl.component.select.BaseSelect
 
@@ -22,19 +24,19 @@ Classes
 .. attributetable:: disnake_compass.impl.component.select.RichUserSelect
 
 .. autoclass:: disnake_compass.impl.component.select.RichUserSelect
-    :members: disabled, max_values, min_values, placeholder, as_ui_component, callback, get_factory, get_manager, make_custom_id, set_factory, set_manager
+    :members: disabled, max_values, min_values, placeholder, default_values, as_ui_component, callback, get_factory, get_manager, make_custom_id, set_factory, set_manager
 
 .. attributetable:: disnake_compass.impl.component.select.RichRoleSelect
 
 .. autoclass:: disnake_compass.impl.component.select.RichRoleSelect
-    :members: disabled, max_values, min_values, placeholder, as_ui_component, callback, get_factory, get_manager, make_custom_id, set_factory, set_manager
+    :members: disabled, max_values, min_values, placeholder, default_values, as_ui_component, callback, get_factory, get_manager, make_custom_id, set_factory, set_manager
 
 .. attributetable:: disnake_compass.impl.component.select.RichMentionableSelect
 
 .. autoclass:: disnake_compass.impl.component.select.RichMentionableSelect
-    :members: disabled, max_values, min_values, placeholder, as_ui_component, callback, get_factory, get_manager, make_custom_id, set_factory, set_manager
+    :members: disabled, max_values, min_values, placeholder, default_values, as_ui_component, callback, get_factory, get_manager, make_custom_id, set_factory, set_manager
 
 .. attributetable:: disnake_compass.impl.component.select.RichChannelSelect
 
 .. autoclass:: disnake_compass.impl.component.select.RichChannelSelect
-    :members: channel_types, disabled, max_values, min_values, placeholder, as_ui_component, callback, get_factory, get_manager, make_custom_id, set_factory, set_manager
+    :members: channel_types, disabled, max_values, min_values, placeholder, default_values, as_ui_component, callback, get_factory, get_manager, make_custom_id, set_factory, set_manager
