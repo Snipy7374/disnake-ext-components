@@ -28,7 +28,6 @@ __all__: typing.Sequence[str] = (
 T = typing.TypeVar("T")
 SelectDefaultValue = list[SelectDefaultValueMultiInputType[T]] | None
 """A type alias for select menu components that supports the ``default_values``
-
 attribute to conveniently typehint in subclasses.
 """
 
