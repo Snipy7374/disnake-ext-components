@@ -1,0 +1,1 @@
+Add support for ``default_values`` for :class:`RichUserSelect`, :class:`RichRoleSelect`, :class:`RichMentionableSelect` and :class:`RichChannelSelect`

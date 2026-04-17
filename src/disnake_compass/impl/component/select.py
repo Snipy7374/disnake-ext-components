@@ -6,10 +6,16 @@ import typing
 
 import attrs
 import disnake
+from disnake.ui.select.base import SelectDefaultValueMultiInputType
 
 from disnake_compass import fields
 from disnake_compass.api import component as component_api
 from disnake_compass.impl.component import base as component_base
+
+if typing.TYPE_CHECKING:
+    from disnake.abc import AnyChannel
+else:
+    AnyChannel = typing.Any
 
 __all__: typing.Sequence[str] = (
     "RichChannelSelect",
@@ -18,6 +24,12 @@ __all__: typing.Sequence[str] = (
     "RichStringSelect",
     "RichUserSelect",
 )
+
+T = typing.TypeVar("T")
+SelectDefaultValue = list[SelectDefaultValueMultiInputType[T]] | None
+"""A type alias for select menu components that supports the ``default_values``
+attribute to conveniently typehint in subclasses.
+"""
 
 
 class BaseSelect(
@@ -107,6 +119,14 @@ class RichUserSelect(BaseSelect, typing.Protocol):
     keyword-only arguments.
     """
 
+    default_values: SelectDefaultValue[disnake.User | disnake.Member] = fields.internal(
+        default=None
+    )
+    """The list of values (users/members) that are selected by default.
+
+    If set, the number of items must be within the bounds set by min_values and max_values.
+    """
+
     async def as_ui_component(  # noqa: D102
         self, manager: component_api.ComponentManager | None = None, /
     ) -> disnake.ui.UserSelect[None]:
@@ -141,6 +161,12 @@ class RichRoleSelect(BaseSelect, typing.Protocol):
     Classes created in this way have auto-generated slots and an auto-generated
     ``__init__``. The init-signature contains all the custom id fields as
     keyword-only arguments.
+    """
+
+    default_values: SelectDefaultValue[disnake.Role] = fields.internal(default=None)
+    """The list of values (roles) that are selected by default.
+
+    If set, the number of items must be within the bounds set by min_values and max_values.
     """
 
     async def as_ui_component(  # noqa: D102
@@ -179,6 +205,14 @@ class RichMentionableSelect(BaseSelect, typing.Protocol):
     keyword-only arguments.
     """
 
+    default_values: SelectDefaultValue[disnake.User | disnake.Member | disnake.Role] = (
+        fields.internal(default=None)
+    )
+    """The list of values (users/roles) that are selected by default.
+
+    If set, the number of items must be within the bounds set by min_values and max_values.
+    """
+
     async def as_ui_component(  # noqa: D102
         self, manager: component_api.ComponentManager | None = None, /
     ) -> disnake.ui.MentionableSelect[None]:
@@ -213,6 +247,12 @@ class RichChannelSelect(BaseSelect, typing.Protocol):
     Classes created in this way have auto-generated slots and an auto-generated
     ``__init__``. The init-signature contains all the custom id fields as
     keyword-only arguments.
+    """
+
+    default_values: SelectDefaultValue[AnyChannel] = fields.internal(default=None)
+    """The list of values (channels) that are selected by default.
+
+    If set, the number of items must be within the bounds set by min_values and max_values.
     """
 
     channel_types: list[disnake.ChannelType] | None = fields.internal(
